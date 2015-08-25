@@ -1,66 +1,54 @@
 package ta
 
 import (
-  "fmt"
+//  "fmt"
 )
 
-func Mean(values []interface{}) float64 {
+func Mean(values []float64) float64 {
   var total float64=0
 	for _,element := range values {
-		total += element.(float64)
+		total += element
 	}
   return total / float64(len(values))
 }
 
-func Sma(values []interface{}, period int) []interface{}{
-  var result []interface{} = make([]interface{}, len(values))
+func Sma(values []float64, period int) []float64{
+  var result []float64
   for index,_ := range values {
     indexPlusOne := index+1
     if(indexPlusOne>=period) {
-      //fmt.Println(index, period, values[indexPlusOne-period:indexPlusOne])
-      y := Mean(values[indexPlusOne-period:indexPlusOne])
-      result[index] = y
-    } else {
-      result[index] = nil
+      avg := Mean(values[indexPlusOne-period:indexPlusOne])
+      result = append(result, avg)
     }
   }
   return result
 }
 
-func Ema(values []interface{}, period int) []interface{} {
+func Ema(values []float64, period int) []float64 {
   sma := Sma(values, period)
-  var result []interface{} = make([]interface{}, len(values))
+  var result []float64
   var multiplier = (2.0 / (float64(period) + 1.0) )
-  for index,element := range values {
-    if(sma[index]==nil || result[index-1]==nil) {
-      result[index] = sma[index]
-    } else {
-      fmt.Println(element.(float64), result[index-1].(float64), (element.(float64) - result[index-1].(float64)))
-      result[index] = (element.(float64) - result[index-1].(float64)) * multiplier + result[index-1].(float64)
-    }
-  }
-  fmt.Println(period, multiplier, result)
+
+  result = append(result,sma[0])
+  for i := (len(values)-len(sma))+1; i < len(values); i++ {
+    lastVal := result[len(result)-1]
+    ema := (values[i] - lastVal) * multiplier + lastVal
+    result = append(result,ema)
+	}
   return result
 }
 
-func Dema(values []interface{}, period int) []interface{} {
-  var result []interface{} = make([]interface{}, len(values))
+func Dema(values []float64, period int) []float64 {
+  var result []float64
   ema := Ema(values, period)
   emaAgain := Ema(ema, period)
-  var emaDouble []interface{} = make([]interface{}, len(values))
-  for index,element := range ema {
-    if(element==nil) {
-      emaDouble[index] = nil
-    } else {
-      emaDouble[index] =  (2.0 * element.(float64))
-    }
+  var emaDouble []float64
+  for _,element := range ema {
+      emaDouble = append(emaDouble, (2.0 * element))
   }
+  offset := len(emaDouble)-len(emaAgain)
   for index,element := range emaAgain {
-    if(element==nil || emaDouble[index]==nil) {
-      result[index] = nil
-    } else {
-      result[index] =  emaDouble[index].(float64) - element.(float64)
-    }
+      result = append(result, (emaDouble[index+offset] - element))
   }
   return result
 }
