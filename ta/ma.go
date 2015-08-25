@@ -4,6 +4,7 @@ import (
 //  "fmt"
 )
 
+// Mean gets the mean value for an array of float64 values
 func Mean(values []float64) float64 {
   var total float64=0
 	for _,element := range values {
@@ -12,6 +13,8 @@ func Mean(values []float64) float64 {
   return total / float64(len(values))
 }
 
+// Sma produces the Simple Moving Average for the
+// supplied array of float64 values for a given period
 func Sma(values []float64, period int) []float64{
   var result []float64
   for index,_ := range values {
@@ -24,6 +27,8 @@ func Sma(values []float64, period int) []float64{
   return result
 }
 
+// Wma produces a Weighted Moving Average (as finance understand it to be) for the
+// supplied array of float64 values for a given period
 func Wma(values []float64, period int) []float64{
   var result []float64
   for index,_ := range values {
@@ -51,6 +56,8 @@ func Wma(values []float64, period int) []float64{
   return result
 }
 
+// Ema calculates the Exponential Moving Average for the
+// supplied array of float64 values for a given period
 func Ema(values []float64, period int) []float64 {
   sma := Sma(values, period)
   var result []float64
