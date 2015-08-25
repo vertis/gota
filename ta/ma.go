@@ -27,7 +27,7 @@ func Sma(values []interface{}, period int) []interface{}{
   return result
 }
 
-func Ema(values []interface{}, period int) []interface{}{
+func Ema(values []interface{}, period int) []interface{} {
   sma := Sma(values, period)
   var result []interface{} = make([]interface{}, len(values))
   var multiplier = (2.0 / (float64(period) + 1.0) )
@@ -40,5 +40,27 @@ func Ema(values []interface{}, period int) []interface{}{
     }
   }
   fmt.Println(period, multiplier, result)
+  return result
+}
+
+func Dema(values []interface{}, period int) []interface{} {
+  var result []interface{} = make([]interface{}, len(values))
+  ema := Ema(values, period)
+  emaAgain := Ema(ema, period)
+  var emaDouble []interface{} = make([]interface{}, len(values))
+  for index,element := range ema {
+    if(element==nil) {
+      emaDouble[index] = nil
+    } else {
+      emaDouble[index] =  (2.0 * element.(float64))
+    }
+  }
+  for index,element := range emaAgain {
+    if(element==nil || emaDouble[index]==nil) {
+      result[index] = nil
+    } else {
+      result[index] =  emaDouble[index].(float64) - element.(float64)
+    }
+  }
   return result
 }

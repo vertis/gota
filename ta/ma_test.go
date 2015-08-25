@@ -40,3 +40,22 @@ func TestEma(t *testing.T) {
 		}
 	}
 }
+
+func TestDema(t *testing.T) {
+	cases := []struct {
+		in []float64
+    want float64
+	}{
+		{ []float64{ 26.0, 54.0, 8.0, 77.0, 61.0, 39.0, 44.0, 91.0, 98.0, 17.0 }, 54.55632373113854 }, //[91.73037037037035, 54.55632373113854, nil, nil, nil, nil, nil, nil, nil, nil]
+	}
+	for _, c := range cases {
+    var interfaceSlice []interface{} = make([]interface{}, len(c.in))
+    for i, d := range c.in {
+      interfaceSlice[i] = d
+    }
+		got := Dema(interfaceSlice, 5)
+		if got[len(got)-1] != c.want {
+			t.Errorf("Dema(%q) == %q, want %q", c.in,got[len(got)-1], c.want)
+		}
+	}
+}
