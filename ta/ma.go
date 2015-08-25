@@ -24,6 +24,33 @@ func Sma(values []float64, period int) []float64{
   return result
 }
 
+func Wma(values []float64, period int) []float64{
+  var result []float64
+  for index,_ := range values {
+    indexPlusOne := index+1
+    if(indexPlusOne>=period) {
+      var res []float64
+      sl := values[indexPlusOne-period:indexPlusOne]
+
+      // Get the sum of the number of entries
+      var sum float64=0
+      for idx,_ := range sl {
+        sum += float64(idx+1)
+      }
+
+      for idx,element := range sl {
+        res = append(res, element*(float64(idx+1)/sum))
+      }
+      var total float64=0
+      for _,element := range res {
+        total += element
+      }
+      result = append(result, total)
+    }
+  }
+  return result
+}
+
 func Ema(values []float64, period int) []float64 {
   sma := Sma(values, period)
   var result []float64
