@@ -1,8 +1,7 @@
 package ta
 
 import (
-  "fmt"
-  "math"
+  
 )
 
 
@@ -16,22 +15,4 @@ func Macd(values []float64, fastPeriod int, slowPeriod int, signalPeriod int) ([
   macdValues, signalPeriodValues = normalizeSlice(macdValues, signalPeriodValues)
   histogram := minusArray(macdValues, signalPeriodValues)
   return macdValues, signalPeriodValues, histogram
-}
-
-func minusArray(valuesA []float64, valuesB []float64) []float64 {
-  sliceA, sliceB := normalizeSlice(valuesA, valuesB)
-  fmt.Println(len(sliceA), len(sliceB))
-  var result []float64
-  for index,element := range sliceA {
-    result = append(result, element-sliceB[index])
-  }
-  return result
-}
-
-func normalizeSlice(valuesA []float64, valuesB []float64) ([]float64, []float64) {
-  offsetA := int(math.Max(0, float64(len(valuesA)-len(valuesB))))
-  offsetB := int(math.Max(0, float64(len(valuesB)-len(valuesB))))
-  sliceA := valuesA[offsetA:]
-  sliceB := valuesB[offsetB:]
-  return sliceA, sliceB
 }
