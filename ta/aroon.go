@@ -4,6 +4,8 @@ import (
   "math"
 )
 
+// Aroon calculates the Aroon Indicator for the
+// supplied array of float64 values for a given period
 func Aroon(values []float64, period int) ([]float64, []float64) {
   var aroonDowns, aroonUps []float64
   for i := period; i < len(values); i++ {
