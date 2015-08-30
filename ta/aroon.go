@@ -6,6 +6,9 @@ import (
 
 // Aroon calculates the Aroon Indicator for the
 // supplied array of float64 values for a given period
+// The formula is:
+// AroonUp = ((<period> - Days Since <period> High)/<period>) x 100
+// AroonDown = ((<period> - Days Since <period> Low)/<period>) x 100
 func Aroon(values []float64, period int) ([]float64, []float64) {
   var aroonDowns, aroonUps []float64
   for i := period; i < len(values); i++ {
