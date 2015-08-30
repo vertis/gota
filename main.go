@@ -1,7 +1,7 @@
 package main
 import (
   //"fmt"
-  "github.com/vertis/gota/ta"
+  //"github.com/vertis/gota/ta"
   //"math"
 )
 
