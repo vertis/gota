@@ -17,7 +17,7 @@ var _ = Describe("Adx", func() {
 			HighLowClose{ High: 6.2, Low: 5.9, Close: 6.0 },
 			HighLowClose{ High: 3.1, Low: 2.9, Close: 3.0 },
 		}
-		out := []float64{ 100.0, 75.17217630853995 }
+		out := []float64{ 100.0, 74.59670572253354 }
 		result := Adx(in, 3)
 		Expect(result).To(Equal(out))
 	})
