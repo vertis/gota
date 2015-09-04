@@ -17,16 +17,16 @@ func Adx(values []HighLowClose, period int) []float64 {
   prevHigh    := values[today].High
   prevLow     := values[today].Low
   prevClose   := values[today].Close
-  for i := period-1; i > 0; i-- {
+  for i := 0; i < period-1; i++ {
      /* Calculate the prevMinusDM and prevPlusDM */
      today++
-     tempReal := values[today].High
-     diffP    := tempReal-prevHigh /* Plus Delta */
-     prevHigh = tempReal
+     curHigh := values[today].High
+     diffP    := curHigh-prevHigh /* Plus Delta */
+     prevHigh = curHigh
 
-     tempReal = values[today].Low
-     diffM    := prevLow-tempReal   /* Minus Delta */
-     prevLow  = tempReal
+     curLow := values[today].Low
+     diffM    := prevLow-curLow   /* Minus Delta */
+     prevLow  = curLow
 
      if (diffM > 0) && (diffP < diffM) {
          /* Case 2 and 4: +DM=0,-DM=diffM */
@@ -36,14 +36,14 @@ func Adx(values []HighLowClose, period int) []float64 {
          prevPlusDM += diffP
      }
 
-     tempReal = TrueRange(prevHigh,prevLow,prevClose)
-     prevTR += tempReal
+     truerange := TrueRange(prevHigh,prevLow,prevClose)
+     prevTR += truerange
      prevClose = values[today].Close
   }
 
   /* Add up all the initial DX. */
   sumDX := 0.0
-  for i := period; i > 0; i-- {
+  for i := 0; i < period; i++ {
      /* Calculate the prevMinusDM and prevPlusDM */
      today++
      tempReal := values[today].High
@@ -66,8 +66,8 @@ func Adx(values []HighLowClose, period int) []float64 {
      }
 
      /* Calculate the prevTR */
-     tempReal = TrueRange(prevHigh,prevLow,prevClose)
-     prevTR = prevTR - (prevTR/float64(period)) + tempReal
+     truerange := TrueRange(prevHigh,prevLow,prevClose)
+     prevTR = prevTR - (prevTR/float64(period)) + truerange
      prevClose = values[today].Close
 
      /* Calculate the DX. The value is rounded (see Wilder book). */
@@ -86,20 +86,20 @@ func Adx(values []HighLowClose, period int) []float64 {
   prevADX := sumDX / float64(period)
 
   /* Output the first ADX */
-  var outReal []float64
-  outReal = append(outReal, prevADX)
+  var results []float64
+  results = append(results, prevADX)
 
   /* Calculate and output subsequent ADX */
   for  ; today < len(values)-1; {
      /* Calculate the prevMinusDM and prevPlusDM */
      today++
-     tempReal := values[today].High
-     diffP    := tempReal-prevHigh /* Plus Delta */
-     prevHigh = tempReal
+     curHigh := values[today].High
+     diffP    := curHigh-prevHigh /* Plus Delta */
+     prevHigh = curHigh
 
-     tempReal = values[today].Low
-     diffM    := prevLow-tempReal   /* Minus Delta */
-     prevLow  = tempReal
+     curLow := values[today].Low
+     diffM    := prevLow-curLow   /* Minus Delta */
+     prevLow  = curLow
 
      prevMinusDM -= prevMinusDM/float64(period)
      prevPlusDM  -= prevPlusDM/float64(period)
@@ -113,25 +113,25 @@ func Adx(values []HighLowClose, period int) []float64 {
      }
 
      /* Calculate the prevTR */
-     tempReal = TrueRange(prevHigh,prevLow,prevClose)
-     prevTR = prevTR - (prevTR/float64(period)) + tempReal
+     truerange := TrueRange(prevHigh,prevLow,prevClose)
+     prevTR = prevTR - (prevTR/float64(period)) + truerange
      prevClose = values[today].Close
 
      if prevTR != 0.0 {
         /* Calculate the DX. The value is rounded (see Wilder book). */
         minusDI  := 100.0*(prevMinusDM/prevTR)
         plusDI   := 100.0*(prevPlusDM/prevTR)
-        tempReal = minusDI+plusDI
-        if tempReal!=0.0 {
-           tempReal = 100.0*(math.Abs(minusDI-plusDI)/tempReal)
+        sumDI := minusDI+plusDI
+        if sumDI!=0.0 {
+           dx := 100.0*(math.Abs(minusDI-plusDI)/sumDI)
            /* Calculate the ADX */
-           prevADX = ((prevADX*(float64(period)-1))+tempReal)/float64(period)
+           prevADX = ((prevADX*(float64(period)-1))+dx)/float64(period)
         }
      }
 
      /* Output the ADX */
-     outReal = append(outReal, prevADX)
+     results = append(results, prevADX)
   }
 
-  return outReal
+  return results
 }
