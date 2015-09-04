@@ -4,11 +4,6 @@ import (
   "math"
 )
 
-func ATrueRange(curHigh float64, curLow float64, prevClose float64) float64 {
-  tempMax := math.Max(curHigh-curLow, math.Abs(curHigh - prevClose))
-  return math.Max(tempMax, math.Abs(curLow - prevClose))
-}
-
 // Adx calculates the Average directional movement index of an array of HighLowClose structs given a period
 func Adx(values []HighLowClose, period int) []float64 {
   lookbackTotal := (2*period) - 1
@@ -41,7 +36,7 @@ func Adx(values []HighLowClose, period int) []float64 {
          prevPlusDM += diffP
      }
 
-     tempReal = ATrueRange(prevHigh,prevLow,prevClose)
+     tempReal = TrueRange(prevHigh,prevLow,prevClose)
      prevTR += tempReal
      prevClose = values[today].Close
   }
@@ -71,7 +66,7 @@ func Adx(values []HighLowClose, period int) []float64 {
      }
 
      /* Calculate the prevTR */
-     tempReal = ATrueRange(prevHigh,prevLow,prevClose)
+     tempReal = TrueRange(prevHigh,prevLow,prevClose)
      prevTR = prevTR - (prevTR/float64(period)) + tempReal
      prevClose = values[today].Close
 
@@ -118,7 +113,7 @@ func Adx(values []HighLowClose, period int) []float64 {
      }
 
      /* Calculate the prevTR */
-     tempReal = ATrueRange(prevHigh,prevLow,prevClose)
+     tempReal = TrueRange(prevHigh,prevLow,prevClose)
      prevTR = prevTR - (prevTR/float64(period)) + tempReal
      prevClose = values[today].Close
 
