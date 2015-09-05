@@ -5,7 +5,7 @@ import (
 )
 
 func BollingerBands(values []float64, period int) ([]float64, []float64, []float64) {
-  deviationsUp := 2.0
+  deviationsUp := 2.0 // TODO: change so it's possible to configure this
   deviationsDown := 2.0
 
   middleBand := Sma(values, period)
@@ -14,10 +14,11 @@ func BollingerBands(values []float64, period int) ([]float64, []float64, []float
   var lowerBand []float64
   for idx, v := range middleBand {
     backIdx := offset+idx-period+1
+    curIdx := offset+idx+1
     if backIdx < 0 {
       backIdx = 0
     }
-    stdDev := SliceStdDev(values[backIdx:offset+idx+1])
+    stdDev := SliceStdDev(values[backIdx:curIdx])
     upperBand = append(upperBand, v + (stdDev * deviationsUp))
     lowerBand = append(lowerBand, v - (stdDev * deviationsDown))
   }
