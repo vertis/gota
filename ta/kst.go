@@ -6,8 +6,6 @@ import (
 )
 
 // Calculates Martin Prings' Know Sure Thing for a slice of float64
-// NB: I struggled to find an implementation to test against (it's not in TA-Lib). Therefore please test the accuracy of this
-// indicator before using
 func Kst(values []float64, rocPeriods []int, avgPeriods []int, signalPeriod int) ([]float64,[]float64) {
   var ksts []float64
   for i := 0; i < len(values); i++ {
