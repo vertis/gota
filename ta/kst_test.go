@@ -111,4 +111,15 @@ var _ = Describe("Kst", func() {
 		Expect(roundedValues(kst_line, .5, 6)).To(Equal(roundedValues(kst_line_out, .5, 6)))
 		Expect(roundedValues(kst_signal_line, .5, 6)).To(Equal(roundedValues(kst_signal_line_out, .5, 6)))
 	})
-})
+
+	// Example: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst
+	It("should return the same results to the stockcharts.com example", func() {
+		closes := []float64{ 1344.78, 1357.98, 1355.69, 1325.51, 1335.02, 1313.72, 1319.99, 1331.85, 1329.04, 1362.16, 1365.51, 1374.02, 1367.58, 1354.68, 1352.46, 1341.47, 1341.45, 1334.76, 1356.78, 1353.64, 1363.67, 1372.78, 1376.51, 1362.66, 1350.52, 1338.31, 1337.89, 1360.02, 1385.97, 1385.30, 1379.32, 1375.32, 1365.00, 1390.99, 1394.23, 1401.35, 1402.22, 1402.80, 1405.87, 1404.11, 1403.93, 1405.53, 1415.51, 1418.16, 1418.13, 1413.17, 1413.49, 1402.08, 1411.13, 1410.44 }
+
+		kst_out := []float64{ 36.60, 37.23, 38.38, 38.78, 37.54, 36.25 }
+		kst, _ := Kst(closes, []int { 10, 15, 20, 30}, []int {10, 10, 10, 15}, 9)
+
+		Expect(roundedValues(kst, .5, 2)).To(Equal(kst_out))
+	})
+
+	})
