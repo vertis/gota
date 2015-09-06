@@ -17,6 +17,9 @@ func Mean(values []float64) float64 {
 // supplied array of float64 values for a given period
 func Sma(values []float64, period int) []float64{
   var result []float64
+  if len(values) < period {
+    return result
+  }
   for index,_ := range values {
     indexPlusOne := index+1
     if(indexPlusOne>=period) {

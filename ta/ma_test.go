@@ -20,6 +20,12 @@ var _ = Describe("Sma", func() {
 		out := []float64{ 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 }
 		Expect(Sma(in, 5)).To(Equal(out))
 	})
+
+	It("should return a nil array the values slice is shorter than the period",func() {
+		in := []float64{ 0.0 }
+		var out []float64
+		Expect(Sma(in, 5)).To(Equal(out))
+	})
 })
 
 var _ = Describe("Wma", func() {
