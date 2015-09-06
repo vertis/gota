@@ -5,7 +5,7 @@ import (
   //"fmt"
 )
 
-// Calculates Martin Prings' Know Sure Thing for a slice of float64
+// Calculates Martin Pring's Know Sure Thing for a slice of float64
 func Kst(values []float64, rocPeriods []int, avgPeriods []int, signalPeriod int) ([]float64,[]float64) {
   var ksts []float64
   for i := 0; i < len(values); i++ {
